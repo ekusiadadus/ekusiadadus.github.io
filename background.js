@@ -199,8 +199,8 @@ function animate() {
         enemy.update();
         const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y);
         if (dist - enemy.radius - player.radius < 1) {
-            cancelAnimationFrame(animationId);
-            modalEl.style.display = "flex";
+            // cancelAnimationFrame(animationId);
+            // (<HTMLElement>modalEl).style.display = "flex";
             bigScoreEl.innerHTML = score.toString();
             gameState = false;
         }
@@ -237,7 +237,7 @@ function animate() {
 }
 canvas.addEventListener("click", (event) => {
     const angle = Math.atan2(event.offsetY - canvas.height / 2, event.offsetX - canvas.width / 2);
-    const velocity = { x: Math.cos(angle) * 5, y: Math.sin(angle) * 5 };
+    const velocity = { x: Math.cos(angle) * 20, y: Math.sin(angle) * 20 };
     var time1 = (new Date().getTime() - time.getTime()) / 1000;
     if (prevtime !== 0 && prevtime + 1 > time1) {
         bulmaToast.toast({
@@ -334,7 +334,7 @@ exportGameElBtn.addEventListener("click", () => {
         exportAnswerEl.style.display = "none";
     }
     else {
-        exportAnswerEl.style.display = "flex";
+        // (<HTMLElement>exportAnswerEl).style.display = "flex";
     }
 });
 submitGameElBtn.addEventListener("click", () => {
@@ -344,8 +344,8 @@ submitGameElBtn.addEventListener("click", () => {
         submitBtnEl.style.display = "none";
     }
     else {
-        submitAnswerEl.style.display = "flex";
-        submitBtnEl.style.display = "inline-block";
+        // (<HTMLElement>submitAnswerEl).style.display = "flex";
+        // (<HTMLElement>submitBtnEl).style.display = "inline-block";
     }
 });
 submitBtnEl.addEventListener("click", () => {
@@ -360,4 +360,10 @@ submitBtnEl.addEventListener("click", () => {
     modalEl.style.display = "none";
     exportAnswerEl.style.display = "none";
 });
+// addEventListener("click", () => {
+//   init();
+//   animate(), spawnEnemies();
+//   (<HTMLElement>modalEl).style.display = "none";
+//   (<HTMLElement>exportAnswerEl).style.display = "none";
+// });
 //# sourceMappingURL=background.js.map
