@@ -201,10 +201,7 @@ function init() {
 }
 
 function spawnEnemies() {
-  var timer = setInterval(() => {
-    if (gameState === false) {
-      clearInterval(timer);
-    }
+  setInterval(() => {
     var time1 = new Date();
     const radius = Math.random() * (30 - 4) + 4;
     let x, y;
@@ -217,7 +214,7 @@ function spawnEnemies() {
     }
     const color = `hsl(${Math.random() * 360},50%,50%)`;
     const angle = Math.atan2(canvas.height / 2 - y, canvas.width / 2 - x);
-    const velocity = { x: Math.cos(angle), y: Math.sin(angle) };
+    const velocity = { x: Math.cos(angle) * 5, y: Math.sin(angle) * 5 };
     const point = Math.floor(1000 * Math.random());
     enemies.push(
       new Enemy(
@@ -230,7 +227,7 @@ function spawnEnemies() {
         point
       )
     );
-  }, 1000);
+  }, 100);
 }
 
 let animationId;
@@ -322,19 +319,9 @@ canvas.addEventListener("click", (event) => {
     event.offsetY - canvas.height / 2,
     event.offsetX - canvas.width / 2
   );
-  const velocity = { x: Math.cos(angle) * 20, y: Math.sin(angle) * 20 };
+  const velocity = { x: Math.cos(angle) * 5, y: Math.sin(angle) * 5 };
   var time1 = (new Date().getTime() - time.getTime()) / 1000;
-  if (prevtime !== 0 && prevtime + 1 > time1) {
-    bulmaToast.toast({
-      message: "Reloading...",
-      type: "is-danger",
-      dismissible: true,
-      pauseOnHover: true,
-      duration: 1000,
-      animate: { in: "fadeIn", out: "fadeOut" },
-      position: "bottom-center",
-    });
-  }
+
   if (prevtime === 0 || prevtime + 1 <= time1) {
     projectiles.push(
       new Projectile(
@@ -378,27 +365,7 @@ function checkBullet() {
     }
     let time1 = (new Date().getTime() - time.getTime()) / 1000;
     submittion.forEach((p, i) => {
-      if (
-        p.time <= time1 &&
-        prevtime + 1 > p.time &&
-        prevtime < p.time &&
-        prevtime !== 0
-      ) {
-        bulmaToast.toast({
-          message: `Failed... ${JSON.stringify(p)}`,
-          type: "is-danger",
-          dismissible: true,
-          pauseOnHover: true,
-          duration: 2000,
-          animate: { in: "fadeIn", out: "fadeOut" },
-          position: "bottom-center",
-        });
-        console.log(`Failed... ${JSON.stringify(p)}`);
-        submittion.splice(i, 1);
-      } else if (
-        p.time <= time1 &&
-        (prevtime === 0 || prevtime + 1 <= p.time)
-      ) {
+      {
         console.log(`canvasw = ${canvas.width / 2}`);
         projectiles.push(
           new Projectile(
@@ -476,9 +443,6 @@ submitBtnEl.addEventListener("click", () => {
   (<HTMLElement>exportAnswerEl).style.display = "none";
 });
 
-// addEventListener("click", () => {
-//   init();
-//   animate(), spawnEnemies();
-//   (<HTMLElement>modalEl).style.display = "none";
-//   (<HTMLElement>exportAnswerEl).style.display = "none";
-// });
+addEventListener("click", () => {
+  animate(), spawnEnemies();
+});
