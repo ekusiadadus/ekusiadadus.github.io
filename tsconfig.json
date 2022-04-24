@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "downlevelIteration": true,
+    "target": "es2020",
+    "sourceMap": true,
+    "lib": [
+      "dom",
+      "es2020",
+      "es5",
+      "es6"
+    ]
+  }
+}

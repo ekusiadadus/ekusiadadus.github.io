@@ -1,0 +1,4 @@
+.phony:
+
+build:
+	tsc
