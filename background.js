@@ -107,12 +107,28 @@ class Ans {
     this.x = x
     this.y = y
   }
+
+  toJSON() {
+    return {
+      time: this.time,
+      x: this.x,
+      y: this.y
+    }
+  }
 }
 class Submittion {
   constructor(time, x, y) {
     this.time = time
     this.x = x
     this.y = y
+  }
+
+  toJSON() {
+    return {
+      time: this.time,
+      x: this.x,
+      y: this.y
+    }
   }
 }
 const x = canvas.width / 2
