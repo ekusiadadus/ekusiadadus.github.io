@@ -233,86 +233,100 @@ function spawnEnemies() {
 
 let animationId = null
 let score = 0
+function updateParticles() {
+  particles.forEach((particle, index) => {
+    if (particle.alpha <= 0) {
+      particles.splice(index, 1)
+    } else {
+      particle.update()
+    }
+  })
+}
+
+function updateProjectiles() {
+  projectiles.forEach((projectile, index) => {
+    projectile.update()
+    if (
+      projectile.x - projectile.radius < 0 ||
+      projectile.x + projectile.radius > canvas.width ||
+      projectile.y + projectile.radius < 0 ||
+      projectile.y - projectile.radius > canvas.height
+    ) {
+      setTimeout(() => {
+        projectiles.splice(index, 1)
+      }, 0)
+    }
+  })
+}
+
+function checkCollision(projectile, enemy, enemyIndex, projectileIndex) {
+  const dist = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y)
+  if (dist - enemy.radius - projectile.radius < 1) {
+    handleCollision(projectile, enemy, enemyIndex, projectileIndex)
+  }
+}
+
+function handleCollision(projectile, enemy, enemyIndex, projectileIndex) {
+  for (let i = 0; i < enemy.radius * 2; ++i) {
+    particles.push(
+      new Particle(
+        projectile.time,
+        projectile.x,
+        projectile.y,
+        3,
+        enemy.color,
+        {
+          x: (Math.random() - 0.5) * (Math.random() * 5),
+          y: (Math.random() - 0.5) * (Math.random() * 5)
+        }
+      )
+    )
+  }
+  if (enemy.radius - 10 > 10) {
+    score += 100
+    scoreEl.innerHTML = score.toString()
+    gsap.to(enemy, { radius: enemy.radius - 10 })
+    setTimeout(() => {
+      projectiles.splice(projectileIndex, 1)
+    }, 0)
+  } else {
+    score += enemy.point
+    scoreEl.innerHTML = score.toString()
+    setTimeout(() => {
+      enemies.splice(enemyIndex, 1)
+      projectiles.splice(projectileIndex, 1)
+    }, 0)
+  }
+}
+
+function updateEnemies() {
+  enemies.forEach((enemy, enemyIndex) => {
+    enemy.update()
+    const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y)
+    if (dist - enemy.radius - player.radius < 1) {
+      gameState = false
+      bigScoreEl.innerHTML = score.toString()
+    }
+    projectiles.forEach((projectile, projectileIndex) => {
+      checkCollision(projectile, enemy, enemyIndex, projectileIndex)
+    })
+  })
+}
+
 function animate() {
   const time1 = (new Date().getTime() - time.getTime()) / 1000
   if (prevtime + 1 <= time1 || prevtime === 0) {
     statusEl.innerHTML = 'Ready!'
-    ;(<HTMLElement>statusEl).style.backgroundColor = 'rgb(34 197 94)'
+    statusEl.style.backgroundColor = 'rgb(34 197 94)'
   }
   animationId = requestAnimationFrame(animate)
   c.fillStyle = 'rgba(0,0,0,0.1)'
   c.fillRect(0, 0, canvas.width, canvas.height)
   player.draw()
-  particles.forEach((particle, particleIndex) => {
-    if (particle.alpha <= 0) {
-      particles.splice(particleIndex, 1)
-    } else {
-      particle.update()
-    }
-  })
-  projectiles.forEach((projectile, projectileIndex) => {
-    projectile.update()
-    if (
-      projectile.x - projectile.radius < 0 ||
-      projectile.x - projectile.radius > canvas.width ||
-      projectile.y + projectile.radius < 0 ||
-      projectile.y - projectile.radius > canvas.height
-    ) {
-      setTimeout(() => {
-        projectiles.splice(projectileIndex, 1)
-      }, 0)
-    }
-  })
-
-  enemies.forEach((enemy, enemyIndex) => {
-    enemy.update()
-    const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y)
-    if (dist - enemy.radius - player.radius < 1) {
-      // cancelAnimationFrame(animationId);
-      // (<HTMLElement>modalEl).style.display = "flex";
-      ;(<HTMLElement>bigScoreEl).innerHTML = score.toString()
-      gameState = false
-    }
-    projectiles.forEach((projectile, projectileIndex) => {
-      const dist = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y)
-      if (dist - enemy.radius - projectile.radius < 1) {
-        for (let i = 0; i < enemy.radius * 2; ++i) {
-          particles.push(
-            new Particle(
-              projectile.time,
-              projectile.x,
-              projectile.y,
-              3,
-              enemy.color,
-              {
-                x: (Math.random() - 0.5) * (Math.random() * 5),
-                y: (Math.random() - 0.5) * (Math.random() * 5)
-              }
-            )
-          )
-        }
-        if (enemy.radius - 10 > 10) {
-          score += 100
-          ;(<HTMLElement>scoreEl).innerHTML = score.toString()
-          gsap.to(enemy, { radius: enemy.radius - 10 })
-          setTimeout(() => {
-            projectiles.splice(projectileIndex, 1)
-          }, 0)
-        } else {
-          score += enemy.point
-          ;(<HTMLElement>scoreEl).innerHTML = score.toString()
-          setTimeout(() => {
-            enemies.splice(enemyIndex, 1)
-            projectiles.splice(projectileIndex, 1)
-          }, 0)
-        }
-      }
-    })
-  })
-  ;(<HTMLInputElement>timeEl).innerHTML = (
-    (new Date().getTime() - time.getTime()) /
-    1000
-  ).toString()
+  updateParticles()
+  updateProjectiles()
+  updateEnemies()
+  timeEl.innerHTML = time1.toString()
 }
 
 canvas.addEventListener('click', (event) => {
