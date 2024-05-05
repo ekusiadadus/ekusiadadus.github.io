@@ -156,6 +156,10 @@ class Ans {
     this.x = x
     this.y = y
   }
+
+  toJSON() {
+    return { time: this.time, x: this.x, y: this.y }
+  }
 }
 
 class Submittion {
@@ -168,6 +172,10 @@ class Submittion {
     this.time = time
     this.x = x
     this.y = y
+  }
+
+  toJSON() {
+    return { time: this.time, x: this.x, y: this.y }
   }
 }
 
