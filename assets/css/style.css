@@ -251,6 +251,20 @@ body {
     letter-spacing: 0.1em;
 }
 
+.avatar-image {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--color-border);
+    filter: grayscale(0.3);
+    transition: filter var(--transition-base);
+}
+
+.avatar-image:hover {
+    filter: grayscale(0);
+}
+
 .hero-stats {
     display: flex;
     gap: var(--space-2xl);
