@@ -917,8 +917,7 @@ body {
         justify-content: center;
     }
 
-    .btn,
-    .btn-liquid {
+    .btn {
         width: 100%;
         max-width: 280px;
     }
