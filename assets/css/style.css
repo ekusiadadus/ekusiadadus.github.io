@@ -872,8 +872,10 @@ body {
     }
 
     .hero-stats {
-        flex-direction: column;
-        gap: var(--space-6);
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--space-3);
     }
 
     .hero-scroll {
@@ -889,9 +891,22 @@ body {
         margin-bottom: var(--space-8);
     }
 
-    .projects-grid,
-    .accomplishments-grid {
+    .projects-grid {
         grid-template-columns: 1fr;
+        gap: var(--space-3);
+    }
+
+    .accomplishments-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-3);
+    }
+
+    .project-card {
+        padding: var(--space-4);
+    }
+
+    .accomplishment-card {
+        padding: var(--space-5);
     }
 
     .timeline::before {
@@ -927,12 +942,8 @@ body {
         align-items: center;
     }
 
-    .hero-stats {
-        gap: var(--space-3);
-    }
-
     .stat.liquid-stat {
-        padding: var(--space-4) var(--space-5);
+        padding: var(--space-3) var(--space-4);
     }
 }
 
