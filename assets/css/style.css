@@ -402,7 +402,7 @@ body {
    Sections - Apple Style
 ======================================== */
 .section {
-    padding: var(--space-16) var(--space-6);
+    padding: var(--space-10) var(--space-6);
 }
 
 .section-alt {
@@ -420,7 +420,7 @@ body {
     letter-spacing: -0.04em;
     line-height: 1.08333;
     color: var(--color-text-primary);
-    margin-bottom: var(--space-10);
+    margin-bottom: var(--space-8);
     text-align: center;
 }
 
