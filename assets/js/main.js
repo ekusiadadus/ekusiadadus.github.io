@@ -79,9 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentScroll = window.pageYOffset;
         
         if (currentScroll > 100) {
-            nav.style.background = 'rgba(255, 255, 255, 0.92)';
+            nav.style.background = 'hsla(210, 40%, 98%, 0.75)';
         } else {
-            nav.style.background = 'rgba(255, 255, 255, 0.72)';
+            nav.style.background = 'hsla(210, 40%, 98%, 0.55)';
         }
 
         lastScroll = currentScroll;
